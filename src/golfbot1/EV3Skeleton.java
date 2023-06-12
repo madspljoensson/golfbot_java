@@ -91,18 +91,15 @@ public void goForward() {
 }
  
 public void forwardWheelEntrance() { //1200 speed?
-	wheelEntranceMotor1.backward();
-	wheelEntranceMotor2.forward();
+	wheelEntranceMotor1.forward();
 }
 
 public void stopWheelEntrance() {
 	wheelEntranceMotor1.stop();
-	wheelEntranceMotor2.stop();
 }
 
 public void backwardWheelEntrance() {
 	wheelEntranceMotor1.forward();
-	wheelEntranceMotor2.backward();
 }
 
 public void shoot() {

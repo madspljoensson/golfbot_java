@@ -14,7 +14,7 @@ public class ServerTest2 {
         NextMove nextMove = new NextMove();
 
         System.out.println("Server is listening on port " + portNumber);
-        //robot.forwardWheelEntrance();
+        robot.forwardWheelEntrance();
         
         try (
             ServerSocket serverSocket = new ServerSocket(portNumber);
@@ -38,8 +38,8 @@ public class ServerTest2 {
                         System.out.println("Robot angle: " + nextMove.getRobotAngle());
                         
                         robot.setPose(nextMove.getRobotCoords()[0], nextMove.getRobotCoords()[1], nextMove.getRobotAngle());
-                        //robot.goTo(nextMove.getNextBall()[0], nextMove.getNextBall()[1]);
-                        robot.goalEjectBall();
+                        robot.goTo(nextMove.getNextBall()[0], nextMove.getNextBall()[1]);
+                        //robot.goalEjectBall();
                         
                 	}
 
