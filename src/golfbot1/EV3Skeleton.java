@@ -144,7 +144,8 @@ public class EV3Skeleton {
 			navigator.followPath();
 		}
 
-		System.out.println("heading:" + navigator.getPoseProvider().getPose().getHeading());
+		System.out.println("Robot heading:" + navigator.getPoseProvider().getPose().getHeading());
+		System.out.println("Robot x, y: " + navigator.getPoseProvider().getPose().getX() + ", " + navigator.getPoseProvider().getPose().getY());
 		System.out.println("Went to x:" + x + "y:" + y);
 
 	}
