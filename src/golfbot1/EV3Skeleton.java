@@ -23,20 +23,23 @@ import lejos.utility.Delay;
 
 public class EV3Skeleton {
 
-	static final String GOAL_SIDE_RELATIVE_TO_CAMERA = "left";
+	static final String GOAL_SIDE_RELATIVE_TO_CAMERA = "right";
 
 	static final double COURSE_HEIGHT = 1.235;
 	static final double COURSE_WIDTH = 1.683;
 
 	static final float[] LEFT_GOAL_POINT = { (float) 0.14, (float) (COURSE_HEIGHT / 2) };
 	static final float[] RIGHT_GOAL_POINT = { (float) (COURSE_WIDTH - 0.14), (float) (COURSE_HEIGHT / 2) };
+	
+	static final float GOAL_PLUS_LENGTH = (float) 0.10;
+	static final float GOAL_MINUS_LENGTH = (float) 0.00;
 
 	// Diameter of a standard EV3 wheel in meters. (medium wheel: 0.056, small
-	// wheel: 0.0432)
-	static final double WHEEL_DIAMETER = 0.0432;
+	// wheel: 0.0432 NEW default: 0.0418)
+	static final double WHEEL_DIAMETER = 0.0420;
 
-	// Distance between center of wheels in meters. (default for test robot: 0.1725)
-	static final double WHEEL_SPACING = 0.1725;
+	// Distance between center of wheels in meters. (default for test robot: 0.1725, NEW default: 0.1745)
+	static final double WHEEL_SPACING = 0.1735;
 
 	static final int ENTRANCE_ACCELERATION = 10000;
 	static final int ENTRANCE_SPEED = 10000;
@@ -82,9 +85,9 @@ public class EV3Skeleton {
 		System.out.println("Robot ready!");
 
 	}
-
-	public void goForward() {
-
+	
+	public void driveTest() {
+		goTo((float)1, 0);
 	}
 
 	public void forwardWheelEntrance() { // 1200 speed?
@@ -96,52 +99,41 @@ public class EV3Skeleton {
 	}
 
 	public void backwardWheelEntrance() {
-		wheelEntranceMotor1.forward();
-	}
-
-	public void shoot() {
-
-		forwardWheelEntrance();
-
-		try {
-			TimeUnit.MILLISECONDS.sleep(4000);
-		} catch (InterruptedException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		}
-
-//	stopWheelEntrance();
-//	
-//	try {
-//		TimeUnit.MILLISECONDS.sleep(2000);
-//	} catch (InterruptedException e1) {
-//		// TODO Auto-generated catch block
-//		e1.printStackTrace();
-//	}
-
-		backwardWheelEntrance();
-
-		try {
-			TimeUnit.MILLISECONDS.sleep(4000);
-		} catch (InterruptedException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		}
-
+		wheelEntranceMotor1.backward();
 	}
 
 	public void goalEjectBall() {
 
 		if (GOAL_SIDE_RELATIVE_TO_CAMERA == "left") {
-			goTo(LEFT_GOAL_POINT[0] + (float) 0.10, LEFT_GOAL_POINT[1]);
-			goTo(LEFT_GOAL_POINT[0], LEFT_GOAL_POINT[1]);
+			goTo(LEFT_GOAL_POINT[0] + GOAL_PLUS_LENGTH, LEFT_GOAL_POINT[1]);
+			goTo(LEFT_GOAL_POINT[0] + GOAL_MINUS_LENGTH, LEFT_GOAL_POINT[1]);
 		} else {
-			goTo(RIGHT_GOAL_POINT[0] - (float) 0.10, RIGHT_GOAL_POINT[1]);
-			goTo(RIGHT_GOAL_POINT[0], RIGHT_GOAL_POINT[1]);
+			goTo(RIGHT_GOAL_POINT[0] - GOAL_PLUS_LENGTH, RIGHT_GOAL_POINT[1]);
+			goTo(RIGHT_GOAL_POINT[0] - GOAL_MINUS_LENGTH, RIGHT_GOAL_POINT[1]);
 		}
 
 		backwardWheelEntrance();
 
+	}
+	
+	public void reverseStep() {
+		
+		pilot.backward();
+		
+		wait(750);
+		
+		pilot.stop();
+		
+	}
+	
+	public void forwardStep() {
+		
+		pilot.forward();
+		
+		wait(500);
+		
+		pilot.stop();
+		
 	}
 
 	public void goTo(float x, float y) {
@@ -158,15 +150,35 @@ public class EV3Skeleton {
 	}
 
 	public void setPose(float x, float y, float heading) {
-		System.out.print("x, y: " + x + y);
-		System.out.print("heading: " + heading);
-		System.out.print("pose: " + pose);
+		System.out.println("Robot x, y: " + x + y);
+		System.out.println("Robot heading: " + heading);
+		//System.out.print("pose: " + pose);
 
 		Pose pose = new Pose(x, y, heading);
 
 		poseProvider.setPose(pose);
 		navigator.setPoseProvider(poseProvider);
 
+	}
+	
+	public void goToCorner(float x, float y) {
+		
+		goTo(x, y);
+        turnOnVentilator();
+        wait(2000);
+        turnOffVentilator();
+        reverseStep();
+		
+	}
+	
+	public void goToEdge(float x, float y) {
+		
+		goTo(x, y);
+        turnOnVentilator();
+        wait(2000);
+        turnOffVentilator();
+        reverseStep();
+        
 	}
 
 	/**
@@ -337,7 +349,6 @@ public class EV3Skeleton {
 	
 	public void collectCornerBall() {
 		turnOnVentilator();
-		wait(4000);
 		turnOffVentilator();
 	}
 	

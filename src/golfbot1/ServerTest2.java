@@ -6,6 +6,10 @@ import java.net.*;
 import org.json.JSONObject;
 
 public class ServerTest2 {
+	
+	static final float MOVE1 = (float) 0.15;
+	static final float MOVE2 = (float) 0.00;
+	
     public static void main(String[] args) throws IOException {
         int portNumber = 10000;
 
@@ -29,16 +33,81 @@ public class ServerTest2 {
                 	
                 	String inputLine;
                 	while ((inputLine = in.readLine()) != null) {
+                		
+                		robot.forwardWheelEntrance();
+                		
                 		JSONObject jsonObj = new JSONObject(inputLine);
 
                         nextMove = nextMove.fromJson(inputLine);
-                        System.out.println("Next ball: " + nextMove.getNextBall());
+//                        System.out.println("Next ball: " + nextMove.getNextBall());
                         System.out.println("Move type: " + nextMove.getMoveType());
-                        System.out.println("Robot coords: " + nextMove.getRobotCoords());
-                        System.out.println("Robot angle: " + nextMove.getRobotAngle());
+//                        System.out.println("Robot coords: " + nextMove.getRobotCoords());
+//                        System.out.println("Robot angle: " + nextMove.getRobotAngle());
                         
                         robot.setPose(nextMove.getRobotCoords()[0], nextMove.getRobotCoords()[1], nextMove.getRobotAngle());
-                        robot.goTo(nextMove.getNextBall()[0], nextMove.getNextBall()[1]);
+                        switch (nextMove.getMoveType()) {
+                        
+	                        case "none":
+	                            System.out.println("Going straight to ball");
+	                            robot.goTo(nextMove.getNextBall()[0], nextMove.getNextBall()[1]);
+	                            break;
+	                        case "lower_left_corner":
+	                            System.out.println("Going to lower left corner ball");
+	                            robot.goTo(nextMove.getNextBall()[0] + MOVE1, nextMove.getNextBall()[1] + MOVE1);
+	                            robot.goToCorner(nextMove.getNextBall()[0] - MOVE2, nextMove.getNextBall()[1] - MOVE2);
+	                            break;
+	                        case "lower_right_corner":
+	                        	System.out.println("Going to lower right corner ball");
+	                        	robot.goTo(nextMove.getNextBall()[0] - MOVE1, nextMove.getNextBall()[1] + MOVE1);
+	                        	robot.goToCorner(nextMove.getNextBall()[0] + MOVE2, nextMove.getNextBall()[1] - MOVE2);
+	                            break;
+	                        case "upper_left_corner":
+	                        	System.out.println("Going to upper left corner ball");
+	                        	robot.goTo(nextMove.getNextBall()[0] + MOVE1, nextMove.getNextBall()[1] - MOVE1);
+	                        	robot.goToCorner(nextMove.getNextBall()[0] - MOVE2, nextMove.getNextBall()[1] + MOVE2);
+	                            break;
+	                        case "upper_right_corner":
+	                        	System.out.println("Going to upper right corner ball");
+	                        	robot.goTo(nextMove.getNextBall()[0] - MOVE1, nextMove.getNextBall()[1] - MOVE1);
+	                            robot.goToCorner(nextMove.getNextBall()[0] + MOVE2, nextMove.getNextBall()[1] + MOVE2);
+	                            break;
+	                        case "left_edge":
+	                            System.out.println("Going to left edge ball");
+	                            robot.goTo(nextMove.getNextBall()[0] + MOVE1, nextMove.getNextBall()[1]);
+	                            robot.goToEdge(nextMove.getNextBall()[0] - MOVE2, nextMove.getNextBall()[1]);
+	                            break;
+	                        case "right_edge":
+	                        	System.out.println("Going to right edge ball");
+	                            robot.goTo(nextMove.getNextBall()[0] - MOVE1, nextMove.getNextBall()[1]);
+	                            robot.goToEdge(nextMove.getNextBall()[0] + MOVE2, nextMove.getNextBall()[1]);
+	                            break;
+	                        case "lower_edge":
+	                        	System.out.println("Going to lower edge ball");
+	                            robot.goTo(nextMove.getNextBall()[0], nextMove.getNextBall()[1] + MOVE1);
+	                            robot.goToEdge(nextMove.getNextBall()[0], nextMove.getNextBall()[1] - MOVE2);
+	                            break;
+	                        case "upper_edge":
+	                        	System.out.println("Going to upper edge ball");
+	                            robot.goTo(nextMove.getNextBall()[0], nextMove.getNextBall()[1] - MOVE1);
+	                            robot.goToEdge(nextMove.getNextBall()[0], nextMove.getNextBall()[1] + MOVE2);
+	                            break;
+	                        
+	                        case "goal":
+	                        	System.out.println("Going to goal");
+	                            robot.goalEjectBall();
+	                            break;
+	                            
+//	                        default:
+//	                            // Default action when the option does not match any case
+//	                            System.out.println("Invalid option");
+//	                            
+//	                            //TEMP:
+//	                            robot.goalEjectBall();
+//	                            break;
+                        
+                    }
+                        
+                        //robot.goTo(nextMove.getNextBall()[0], nextMove.getNextBall()[1]);
                         //robot.goalEjectBall();
                         
                 	}
