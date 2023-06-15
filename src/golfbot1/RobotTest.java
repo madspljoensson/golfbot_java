@@ -9,13 +9,20 @@ public class RobotTest {
 		
 		EV3Skeleton robot = new EV3Skeleton();
 		
-        robot.forwardWheelEntrance();
+		robot.forwardWheelEntrance();
+		robot.wait(2000);
+		
+		while(true) {
+	        //robot.forwardWheelEntrance();
+			
+	        robot.backwardWheelEntrance();
+		}
         
-        robot.collectCornerBall();
+        //robot.collectCornerBall();
 
-        robot.forwardWheelEntrance();
+        //robot.forwardWheelEntrance();
 
-		robot.wait(5000);
+		//robot.wait(5000);
 		
 		//robot.shoot();
 		

@@ -96,7 +96,7 @@ public class EV3Skeleton {
 	}
 
 	public void backwardWheelEntrance() {
-		wheelEntranceMotor1.forward();
+		wheelEntranceMotor1.backward();
 	}
 
 	public void shoot() {
@@ -337,7 +337,7 @@ public class EV3Skeleton {
 	
 	public void collectCornerBall() {
 		turnOnVentilator();
-		wait(4000);
+		//wait(50);
 		turnOffVentilator();
 	}
 	
