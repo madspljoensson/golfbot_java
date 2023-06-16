@@ -1,10 +1,10 @@
 package golfbot1;
 
 import java.util.concurrent.TimeUnit;
+import golfbot1.ServerTest2.*;
 
 //from: https://github.com/Ziron/lejos-ev3-examples/blob/ffe1e964862fc6c4145a971c6ed9aca0b7156d8f/EV3Skeleton.java#L167
 import lejos.hardware.Brick;
-
 import lejos.hardware.BrickFinder;
 import lejos.hardware.Button;
 import lejos.hardware.Sound;
@@ -87,7 +87,22 @@ public class EV3Skeleton {
 	}
 	
 	public void driveTest() {
-		goTo((float)1, 0);
+		
+//		navigator.goTo((float)0.2, 0);
+//		System.out.println("1");
+//		navigator.goTo((float)0.2, (float)-0.2);
+//		System.out.println("2");
+//		navigator.goTo((float)0, (float)-0.2);
+//		System.out.println("3");
+//		navigator.goTo((float)0, 0);
+//		System.out.println("4");
+		
+//		testMove((float)0.2, 0, 0, 0, 0);
+//		testMove((float)0.2, (float)0.2, (float)0.2, 0, 0);
+//		testMove((float)0, (float)0.2, (float)0.2, (float)0.2, 90);
+//		testMove((float)0, (float)0, (float)0, (float)0.2, 180);
+		
+		navigator.rotateTo(0);
 	}
 
 	public void forwardWheelEntrance() { // 1200 speed?
@@ -102,14 +117,16 @@ public class EV3Skeleton {
 		wheelEntranceMotor1.backward();
 	}
 
-	public void goalEjectBall() {
+	public void goalEjectBall(Pose pose) {
 
 		if (GOAL_SIDE_RELATIVE_TO_CAMERA == "left") {
-			goTo(LEFT_GOAL_POINT[0] + GOAL_PLUS_LENGTH, LEFT_GOAL_POINT[1]);
-			goTo(LEFT_GOAL_POINT[0] + GOAL_MINUS_LENGTH, LEFT_GOAL_POINT[1]);
+			Pose newPose = ServerTest2.makePose(pose, LEFT_GOAL_POINT[0] + GOAL_PLUS_LENGTH, LEFT_GOAL_POINT[1]);
+			goTo(LEFT_GOAL_POINT[0] + GOAL_PLUS_LENGTH, LEFT_GOAL_POINT[1], pose);
+			goTo(LEFT_GOAL_POINT[0] + GOAL_MINUS_LENGTH, LEFT_GOAL_POINT[1], newPose);
 		} else {
-			goTo(RIGHT_GOAL_POINT[0] - GOAL_PLUS_LENGTH, RIGHT_GOAL_POINT[1]);
-			goTo(RIGHT_GOAL_POINT[0] - GOAL_MINUS_LENGTH, RIGHT_GOAL_POINT[1]);
+			Pose newPose = ServerTest2.makePose(pose, RIGHT_GOAL_POINT[0] - GOAL_PLUS_LENGTH, RIGHT_GOAL_POINT[1]);
+			goTo(RIGHT_GOAL_POINT[0] - GOAL_PLUS_LENGTH, RIGHT_GOAL_POINT[1], pose);
+			goTo(RIGHT_GOAL_POINT[0] - GOAL_MINUS_LENGTH, RIGHT_GOAL_POINT[1], newPose);
 		}
 
 		backwardWheelEntrance();
@@ -138,8 +155,12 @@ public class EV3Skeleton {
 
 	public void goTo(float x, float y) {
 
+		while (!navigator.pathCompleted()) {
+			navigator.followPath();
+		}
+		
 		navigator.addWaypoint(x, y);
-
+		
 		while (!navigator.pathCompleted()) {
 			navigator.followPath();
 		}
@@ -148,6 +169,28 @@ public class EV3Skeleton {
 		System.out.println("Robot x, y: " + navigator.getPoseProvider().getPose().getX() + ", " + navigator.getPoseProvider().getPose().getY());
 		System.out.println("Went to x:" + x + "y:" + y);
 
+	}
+	
+	public void goTo(float x, float y, Pose pose) {
+	
+		while (!navigator.pathCompleted()) {
+			navigator.followPath();
+		}
+		
+		poseProvider.setPose(pose);
+		navigator.setPoseProvider(poseProvider);
+		navigator.addWaypoint(x, y);
+		
+		while (!navigator.pathCompleted()) {
+			navigator.followPath();
+		}
+		
+		System.out.println("Robot heading:" + navigator.getPoseProvider().getPose().getHeading());
+		System.out.println("Robot x, y: " + navigator.getPoseProvider().getPose().getX() + ", " + navigator.getPoseProvider().getPose().getY());
+		System.out.println("Went to x:" + x + "y:" + y);
+
+
+		
 	}
 
 	public void setPose(float x, float y, float heading) {
@@ -162,9 +205,9 @@ public class EV3Skeleton {
 
 	}
 	
-	public void goToCorner(float x, float y) {
+	public void goToCorner(float x, float y, Pose pose) {
 		
-		goTo(x, y);
+		goTo(x, y, pose);
         turnOnVentilator();
         wait(2000);
         turnOffVentilator();
@@ -172,9 +215,9 @@ public class EV3Skeleton {
 		
 	}
 	
-	public void goToEdge(float x, float y) {
+	public void goToEdge(float x, float y, Pose pose) {
 		
-		goTo(x, y);
+		goTo(x, y, pose);
         turnOnVentilator();
         wait(2000);
         turnOffVentilator();
