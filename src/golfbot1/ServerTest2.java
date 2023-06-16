@@ -56,49 +56,49 @@ public class ServerTest2 {
 							break;
 						case "lower_left_corner":
 							System.out.println("Going to lower left corner ball");
-							Pose llPose = makePose(pose, nextMove.getNextBall()[0] + MOVE1, nextMove.getNextBall()[1] + MOVE1);
+							Pose llPose = robot.makePose(pose, nextMove.getNextBall()[0] + MOVE1, nextMove.getNextBall()[1] + MOVE1);
 							robot.goTo(nextMove.getNextBall()[0] + MOVE1, nextMove.getNextBall()[1] + MOVE1, pose);
 							robot.goToCorner(nextMove.getNextBall()[0] - MOVE2, nextMove.getNextBall()[1] - MOVE2, llPose);
 							break;
 						case "lower_right_corner":
 							System.out.println("Going to lower right corner ball");
-							Pose lrPose = makePose(pose, nextMove.getNextBall()[0] - MOVE1, nextMove.getNextBall()[1] + MOVE1);
+							Pose lrPose = robot.makePose(pose, nextMove.getNextBall()[0] - MOVE1, nextMove.getNextBall()[1] + MOVE1);
 							robot.goTo(nextMove.getNextBall()[0] - MOVE1, nextMove.getNextBall()[1] + MOVE1, pose);
 							robot.goToCorner(nextMove.getNextBall()[0] + MOVE2, nextMove.getNextBall()[1] - MOVE2, lrPose);
 							break;
 						case "upper_left_corner":
 							System.out.println("Going to upper left corner ball");
-							Pose ulPose = makePose(pose, nextMove.getNextBall()[0] + MOVE1, nextMove.getNextBall()[1] - MOVE1);
+							Pose ulPose = robot.makePose(pose, nextMove.getNextBall()[0] + MOVE1, nextMove.getNextBall()[1] - MOVE1);
 							robot.goTo(nextMove.getNextBall()[0] + MOVE1, nextMove.getNextBall()[1] - MOVE1, pose);
 							robot.goToCorner(nextMove.getNextBall()[0] - MOVE2, nextMove.getNextBall()[1] + MOVE2, ulPose);
 							break;
 						case "upper_right_corner":
 							System.out.println("Going to upper right corner ball");
-							Pose urPose = makePose(pose, nextMove.getNextBall()[0] - MOVE1, nextMove.getNextBall()[1] - MOVE1);
+							Pose urPose = robot.makePose(pose, nextMove.getNextBall()[0] - MOVE1, nextMove.getNextBall()[1] - MOVE1);
 							robot.goTo(nextMove.getNextBall()[0] - MOVE1, nextMove.getNextBall()[1] - MOVE1, pose);
 							robot.goToCorner(nextMove.getNextBall()[0] + MOVE2, nextMove.getNextBall()[1] + MOVE2, urPose);
 							break;
 						case "left_edge":
 							System.out.println("Going to left edge ball");
-							Pose leftPose = makePose(pose, nextMove.getNextBall()[0] + MOVE1, nextMove.getNextBall()[1]);
+							Pose leftPose = robot.makePose(pose, nextMove.getNextBall()[0] + MOVE1, nextMove.getNextBall()[1]);
 							robot.goTo(nextMove.getNextBall()[0] + MOVE1, nextMove.getNextBall()[1], pose);
 							robot.goToEdge(nextMove.getNextBall()[0] - MOVE2, nextMove.getNextBall()[1], leftPose);
 							break;
 						case "right_edge":
 							System.out.println("Going to right edge ball");
-							Pose rightPose = makePose(pose, nextMove.getNextBall()[0] - MOVE1, nextMove.getNextBall()[1]);
+							Pose rightPose = robot.makePose(pose, nextMove.getNextBall()[0] - MOVE1, nextMove.getNextBall()[1]);
 							robot.goTo(nextMove.getNextBall()[0] - MOVE1, nextMove.getNextBall()[1], pose);
 							robot.goToEdge(nextMove.getNextBall()[0] + MOVE2, nextMove.getNextBall()[1], rightPose);
 							break;
 						case "lower_edge":
 							System.out.println("Going to lower edge ball");
-							Pose downPose = makePose(pose, nextMove.getNextBall()[0], nextMove.getNextBall()[1] + MOVE1);
+							Pose downPose = robot.makePose(pose, nextMove.getNextBall()[0], nextMove.getNextBall()[1] + MOVE1);
 							robot.goTo(nextMove.getNextBall()[0], nextMove.getNextBall()[1] + MOVE1, pose);
 							robot.goToEdge(nextMove.getNextBall()[0], nextMove.getNextBall()[1] - MOVE2, downPose);
 							break;
 						case "upper_edge":
 							System.out.println("Going to upper edge ball");
-							Pose upPose = makePose(pose, nextMove.getNextBall()[0], nextMove.getNextBall()[1] - MOVE1);
+							Pose upPose = robot.makePose(pose, nextMove.getNextBall()[0], nextMove.getNextBall()[1] - MOVE1);
 							robot.goTo(nextMove.getNextBall()[0], nextMove.getNextBall()[1] - MOVE1, pose);
 							robot.goToEdge(nextMove.getNextBall()[0], nextMove.getNextBall()[1] + MOVE2, upPose);
 							break;
@@ -147,10 +147,10 @@ public class ServerTest2 {
 		}
 	}
 	
-	public static Pose makePose(Pose pose, float x, float y) {
-		Point p = new Point(x, y);
-		float heading = pose.angleTo(p);
-		Pose newPose = new Pose(x, y, heading);
-		return newPose;
-	}
+	//public static Pose makePose(Pose pose, float x, float y) {
+	//	Point p = new Point(x, y);
+	//	float heading = pose.angleTo(p);
+	//	Pose newPose = new Pose(x, y, heading);
+	//	return newPose;
+	//}
 }

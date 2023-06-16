@@ -63,6 +63,7 @@ public class NextMove {
         nextMove.setNextBall(fillData1(jsonObject.getJSONArray("next_ball")));
         
         System.out.println("move type: " + jsonObject.getString("move_type"));
+
         nextMove.setMoveType(jsonObject.getString("move_type"));
         
         System.out.println("robot coord: " + jsonObject.getJSONArray("robot_coords"));
@@ -70,7 +71,7 @@ public class NextMove {
 
         System.out.println("robot heading: " + jsonObject.getFloat("robot_heading"));
         nextMove.setRobotAngle(jsonObject.getFloat("robot_heading"));
-        
+ 
         return nextMove;
     }
     

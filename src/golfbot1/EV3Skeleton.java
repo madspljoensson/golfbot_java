@@ -19,7 +19,9 @@ import lejos.robotics.localization.PoseProvider;
 import lejos.robotics.navigation.MovePilot;
 import lejos.robotics.navigation.Navigator;
 import lejos.robotics.navigation.Pose;
+import lejos.robotics.geometry.Point;
 import lejos.utility.Delay;
+
 
 public class EV3Skeleton {
 
@@ -120,15 +122,14 @@ public class EV3Skeleton {
 	public void goalEjectBall(Pose pose) {
 
 		if (GOAL_SIDE_RELATIVE_TO_CAMERA == "left") {
-			Pose newPose = ServerTest2.makePose(pose, LEFT_GOAL_POINT[0] + GOAL_PLUS_LENGTH, LEFT_GOAL_POINT[1]);
+			Pose newPose = makePose(pose, LEFT_GOAL_POINT[0] + GOAL_PLUS_LENGTH, LEFT_GOAL_POINT[1]);
 			goTo(LEFT_GOAL_POINT[0] + GOAL_PLUS_LENGTH, LEFT_GOAL_POINT[1], pose);
 			goTo(LEFT_GOAL_POINT[0] + GOAL_MINUS_LENGTH, LEFT_GOAL_POINT[1], newPose);
 		} else {
-			Pose newPose = ServerTest2.makePose(pose, RIGHT_GOAL_POINT[0] - GOAL_PLUS_LENGTH, RIGHT_GOAL_POINT[1]);
+			Pose newPose = makePose(pose, RIGHT_GOAL_POINT[0] - GOAL_PLUS_LENGTH, RIGHT_GOAL_POINT[1]);
 			goTo(RIGHT_GOAL_POINT[0] - GOAL_PLUS_LENGTH, RIGHT_GOAL_POINT[1], pose);
 			goTo(RIGHT_GOAL_POINT[0] - GOAL_MINUS_LENGTH, RIGHT_GOAL_POINT[1], newPose);
 		}
-
 		backwardWheelEntrance();
 
 	}
@@ -222,6 +223,7 @@ public class EV3Skeleton {
         wait(2000);
         turnOffVentilator();
         reverseStep();
+        
         
 	}
 
@@ -403,6 +405,13 @@ public class EV3Skeleton {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
+	}
+	
+	public static Pose makePose(Pose pose, float x, float y) {
+		Point p = new Point(x, y);
+		float heading = pose.angleTo(p);
+		Pose newPose = new Pose(x, y, heading);
+		return newPose;
 	}
 
 }

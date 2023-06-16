@@ -8,8 +8,7 @@ public class RobotTest {
 	public static void main(String[] args) {
 		
 		EV3Skeleton robot = new EV3Skeleton();
-		
-		
+				
 		robot.driveTest();
 		
 		
