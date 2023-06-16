@@ -8,7 +8,7 @@ import org.json.JSONObject;
 public class ServerTest2 {
     public static void main(String[] args) throws IOException {
         String host = "localhost";  // Change to the appropriate host if needed
-        int port = 5000;  // Change to the appropriate port if needed
+        int port = 10000;  // Change to the appropriate port if needed
         int portNumber = 10000;
 
         //EV3Skeleton robot = new EV3Skeleton();
@@ -30,7 +30,7 @@ public class ServerTest2 {
                 try {
                 	String inputLine;
                 	while ((inputLine = in.readLine()) != null) {
-                		JSONObject jsonObj = new JSONObject(inputLine);
+                		//JSONObject jsonObj = new JSONObject(inputLine);
 
                         //nextMove = nextMove.fromJson(inputLine);
                         //System.out.println("Next ball: " + nextMove.getNextBall());
@@ -69,28 +69,30 @@ public class ServerTest2 {
         } finally {
         	
         }
-        
-        try {
-            // Attempt to create a socket object and connect to the server
-            Socket socket = new Socket(host, port);
-            // Create input and output streams for the socket
-            PrintWriter output = new PrintWriter(socket.getOutputStream(), true);
+        while (true) {
+        	try {
+                // Attempt to create a socket object and connect to the server
+                Socket socket = new Socket(host, port);
+                // Create input and output streams for the socket
+                PrintWriter output = new PrintWriter(socket.getOutputStream(), true);
 
-            // Send messages to the server
-            BufferedReader consoleInput = new BufferedReader(new InputStreamReader(System.in));
-            String message = "hello";
-            output.println(message);
+                // Send messages to the server
+                BufferedReader consoleInput = new BufferedReader(new InputStreamReader(System.in));
+                String message = "hello";
+                output.println(message);
 
-            // Close the connection
-            socket.close();
-        } catch (IOException e) {
-            System.out.println("Connection failed. Retrying...");
-            try {
-                // Wait for a while before retrying connection
-                Thread.sleep(1000);
-            } catch (InterruptedException ex) {
-                ex.printStackTrace();
+                // Close the connection
+                socket.close();
+            } catch (IOException e) {
+                System.out.println("Connection failed. Retrying...");
+                try {
+                    // Wait for a while before retrying connection
+                    Thread.sleep(1000);
+                } catch (InterruptedException ex) {
+                    ex.printStackTrace();
+                }
             }
+
         }
-    }
+            }
 }

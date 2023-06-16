@@ -62,14 +62,14 @@ public class NextMove {
         System.out.println("next ball: " + jsonObject.getJSONArray("next_ball"));
         nextMove.setNextBall(fillData1(jsonObject.getJSONArray("next_ball")));
         
-        System.out.println("robot angle: " + jsonObject.getString("move_type"));
+        System.out.println("move_type: " + jsonObject.getString("move_type"));
         nextMove.setMoveType(jsonObject.getString("move_type"));
         
         System.out.println("robot coord: " + jsonObject.getJSONArray("robot_coords"));
         nextMove.setRobotCoords(fillData1(jsonObject.getJSONArray("robot_coords")));
 
-        System.out.println("robot angle: " + jsonObject.getFloat("robot_angle"));
-        nextMove.setRobotAngle(jsonObject.getFloat("robot_angle"));
+        System.out.println("robot angle: " + jsonObject.getFloat("robot_heading"));
+        nextMove.setRobotAngle(jsonObject.getFloat("robot_heading"));
 
         
         return nextMove;
