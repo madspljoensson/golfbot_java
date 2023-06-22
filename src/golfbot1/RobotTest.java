@@ -9,8 +9,11 @@ public class RobotTest {
 		
 		EV3Skeleton robot = new EV3Skeleton();
 				
-		robot.driveTest();
+		robot.turnOnVentilator();
 		
+		robot.wait(2000);
+		
+		robot.turnOffVentilator();
 		
 //        robot.forwardWheelEntrance();
 //        

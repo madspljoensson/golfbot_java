@@ -30,11 +30,11 @@ public class EV3Skeleton {
 	static final double COURSE_HEIGHT = 1.235;
 	static final double COURSE_WIDTH = 1.683;
 
-	static final float[] LEFT_GOAL_POINT = { (float) 0.14, (float) (COURSE_HEIGHT / 2) };
-	static final float[] RIGHT_GOAL_POINT = { (float) (COURSE_WIDTH - 0.14), (float) (COURSE_HEIGHT / 2) };
+	static final float[] LEFT_GOAL_POINT = { (float) 0.15, (float) (COURSE_HEIGHT / 2) };
+	static final float[] RIGHT_GOAL_POINT = { (float) (COURSE_WIDTH - 0.15), (float) (COURSE_HEIGHT / 2) };
 	
-	static final float GOAL_PLUS_LENGTH = (float) 0.10;
-	static final float GOAL_MINUS_LENGTH = (float) 0.00;
+	static final float GOAL_PLUS_LENGTH = (float) 0.20;
+	static final float GOAL_MINUS_LENGTH = (float) 0.02;
 
 	// Diameter of a standard EV3 wheel in meters. (medium wheel: 0.056, small
 	// wheel: 0.0432 NEW default: 0.0418)
@@ -52,7 +52,7 @@ public class EV3Skeleton {
 	static final double PILOT_LINEAR_ACCELERATION = 0.9;
 
 	// default turn speed in deg/s (default: 180)
-	static final double PILOT_ANGULAR_SPEED = 180;
+	static final double PILOT_ANGULAR_SPEED = 120;
 	// default turn acceleration in deg/s^2 (default: 540)
 	static final double PILOT_ANGULAR_ACCELERATION = 540;
 
@@ -120,7 +120,8 @@ public class EV3Skeleton {
 	}
 
 	public void goalEjectBall(Pose pose) {
-
+		
+		// if robot is close enough to goal point
 		if (GOAL_SIDE_RELATIVE_TO_CAMERA == "left") {
 			Pose newPose = makePose(pose, LEFT_GOAL_POINT[0] + GOAL_PLUS_LENGTH, LEFT_GOAL_POINT[1]);
 			goTo(LEFT_GOAL_POINT[0] + GOAL_PLUS_LENGTH, LEFT_GOAL_POINT[1], pose);
@@ -131,14 +132,76 @@ public class EV3Skeleton {
 			goTo(RIGHT_GOAL_POINT[0] - GOAL_MINUS_LENGTH, RIGHT_GOAL_POINT[1], newPose);
 		}
 		backwardWheelEntrance();
+		wait(5000);
+		backwardWheelEntrance();
+		wait(5000);
+		wiggle();
+		wait(5000);
+		reverseStep();
+		forwardWheelEntrance();
+		
+		
+		
+		
+		// if robot is in upper left
+		
+		// if robot is in upper right
+
+		// if robot is in lower right
+		
+		// if robot is in lower left
+		
+		
+		
+		
+		
 
 	}
+	
+	public void goalEjectBall(Pose pose, String goal) {
+		
+		// if robot is close enough to goal point
+		if (goal.equals("left")) {
+			Pose newPose = makePose(pose, LEFT_GOAL_POINT[0] + GOAL_PLUS_LENGTH, LEFT_GOAL_POINT[1]);
+			goTo(LEFT_GOAL_POINT[0] + GOAL_PLUS_LENGTH, LEFT_GOAL_POINT[1], pose);
+			goTo(LEFT_GOAL_POINT[0] + GOAL_MINUS_LENGTH, LEFT_GOAL_POINT[1], newPose);
+		} else {
+			Pose newPose = makePose(pose, RIGHT_GOAL_POINT[0] - GOAL_PLUS_LENGTH, RIGHT_GOAL_POINT[1]);
+			goTo(RIGHT_GOAL_POINT[0] - GOAL_PLUS_LENGTH, RIGHT_GOAL_POINT[1], pose);
+			goTo(RIGHT_GOAL_POINT[0] - GOAL_MINUS_LENGTH, RIGHT_GOAL_POINT[1], newPose);
+		}
+		backwardWheelEntrance();
+		wait(10000);
+		wiggle();
+		wait(5000);
+		reverseStep();
+		forwardWheelEntrance();
+	}
+		
 	
 	public void reverseStep() {
 		
 		pilot.backward();
 		
 		wait(750);
+		
+		pilot.stop();
+		
+	}
+	public void reverseEdgeStep() {
+		
+		pilot.backward();
+		
+		wait(550);
+		
+		pilot.stop();
+		
+	}
+	public void halfReverseStep() {
+		
+		pilot.backward();
+		
+		wait(400);
 		
 		pilot.stop();
 		
@@ -222,10 +285,42 @@ public class EV3Skeleton {
         turnOnVentilator();
         wait(2000);
         turnOffVentilator();
-        reverseStep();
+        reverseEdgeStep();
         
         
 	}
+	
+	public void goToEdge1(float x, float y, Pose pose) {
+		
+		goTo(x, y, pose);
+		pilot.forward();
+        wait(180);
+        pilot.stop();
+        turnOnVentilator();
+        wait(2000);
+        turnOffVentilator();
+        halfReverseStep();
+
+        
+        
+	}
+	
+	public void wiggle() {
+        for (int i = 0; i < 10; i++) {
+            pilot.backward();
+            backwardWheelEntrance();
+            wait(100);
+            backwardWheelEntrance();
+            pilot.stop();
+            backwardWheelEntrance();
+            pilot.forward();
+            backwardWheelEntrance();
+            wait(120);
+            backwardWheelEntrance();
+            pilot.stop();
+        }
+    }
+	
 
 	/**
 	 * Instantiates a brick and all the motors and sensors of the robot.

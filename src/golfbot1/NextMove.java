@@ -9,12 +9,14 @@ public class NextMove {
     private String moveType;
     private float[] robotCoords;
     private float robotAngle;
+    private float[] extraPoint;
 
     public NextMove() {
         this.nextBall = new float[0];
         this.moveType = "";
         this.robotCoords = new float[0];
         this.robotAngle = 0.0f;
+        this.extraPoint = new float[0];
     }
     
 //    public void setNextMove(float[] nextBall, float[] robotCoords, float[] robotAngle) {
@@ -54,6 +56,15 @@ public class NextMove {
     public void setRobotAngle(float robotAngle) {
         this.robotAngle = robotAngle;
     }
+    
+    public float[] getExtraPoint() {
+        return this.extraPoint;
+    }
+
+    public void setExtraPoint(float[] extraPoint) {
+        this.extraPoint = extraPoint;
+    }
+    
 
     public static NextMove fromJson(String json) {
         JSONObject jsonObject = new JSONObject(json);
@@ -71,6 +82,9 @@ public class NextMove {
 
         System.out.println("robot heading: " + jsonObject.getFloat("robot_heading"));
         nextMove.setRobotAngle(jsonObject.getFloat("robot_heading"));
+        
+        System.out.println("extra point: " + jsonObject.getJSONArray("extra_point"));
+        nextMove.setExtraPoint(fillData1(jsonObject.getJSONArray("extra_point")));
  
         return nextMove;
     }
