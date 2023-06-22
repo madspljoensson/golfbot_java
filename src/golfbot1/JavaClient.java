@@ -10,6 +10,8 @@ import org.json.JSONObject;
 import lejos.robotics.geometry.Point;
 import lejos.robotics.navigation.Pose;
 
+// socket client code is inspired by https://lindevs.com/create-single-threaded-tcp-echo-server-and-client-using-java
+
 public class JavaClient
 {
     private final static String HOSTNAME = "192.168.181.232";
